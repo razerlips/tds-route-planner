@@ -319,7 +319,7 @@ const BASE=[
   {id:'xmasgreet',name:'ディズニー・クリスマス・グリーティング',area:'med',x:-30,y:250,dur:25,type:'show',times:['11:40','15:15'],est:true},
   {id:'sjn',name:'【環境演出】スパークリング・ジュビリー・ナイト',area:'med',x:20,y:260,dur:10,type:'show',times:['20:15','20:55'],est:true},
   {id:'dtg',name:'ダンス・ザ・グローブ！',area:'awf',x:230,y:320,dur:30,type:'show',times:['12:50','14:35','16:55','18:40'],flags:'エントリー受付・DPA対象',est:true},
-  {id:'dtf',name:'ドリームス・テイク・フライト',area:'med',x:-60,y:280,dur:30,type:'show',times:['11:00','12:25','13:50','15:55','17:20'],flags:'エントリー受付・DPA対象',est:true},
+  {id:'dtf',name:'ドリームス・テイク・フライト',area:'lrd',x:60,y:660,dur:30,type:'show',times:['11:00','12:25','13:50','15:55','17:20'],flags:'エントリー受付・DPA対象'},
   {id:'g-amigos',name:'“サルードス・アミーゴス！”グリーティングドック',area:'lrd',x:60,y:690,dur:5,wait:40,type:'greet',wins:[['09:30','20:00']],est:true},
   {id:'g-mickey',name:'ミッキー＆フレンズ・グリーティングトレイル',area:'lrd',x:160,y:800,dur:5,wait:60,type:'greet',wins:[['09:30','20:00']],est:true},
   {id:'g-minnie',name:'ミッキー＆フレンズ・グリーティングトレイル（ミニー）',area:'lrd',x:175,y:815,dur:5,wait:45,type:'greet',wins:[['09:30','20:00']],est:true},
@@ -336,14 +336,15 @@ const SAMPLE={tsm:{first:true,wait:60},soarin:{prio:true},turtle:{},'20k':{after
 const KEY='sea-planner-v1', UIKEY='sea-planner-ui';
 function nextMonthISO(){const d=new Date();d.setMonth(d.getMonth()+1);return d.toISOString().slice(0,10)}
 function defaults(){
-  const s={v:13,settings:{date:nextMonthISO(),open:'09:00',close:'21:00',speed:60,buffer:15},items:{},custom:[]};
+  const s={v:14,settings:{date:nextMonthISO(),open:'09:00',close:'21:00',speed:60,buffer:15},items:{},custom:[]};
   for(const[k,v]of Object.entries(SAMPLE))s.items[k]={sel:true,...v};
   return s;
 }
 let state=null;
 try{state=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!state||!state.settings||!state.items)state=defaults();
-state.custom=state.custom||[];state.v=13;
+state.custom=state.custom||[];
+if((state.v||0)<14){const d=state.items.dtf;if(d&&d.area==='med')delete d.area;state.v=14}
 let ui={tab:'pick',filter:'all',q:''};
 try{Object.assign(ui,JSON.parse(localStorage.getItem(UIKEY))||{})}catch(e){}
 ui.q='';
